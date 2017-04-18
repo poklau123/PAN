@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Web;
 using System.Web.Script.Serialization;
+using PAN.Controller;
+using PAN.Conf;
 
 /// <summary>
 /// RequestProcess 的摘要说明
@@ -33,7 +33,7 @@ public class RequestProcess
     /// <summary>
     /// HttpContext句柄
     /// </summary>
-    private HttpContext context;    
+    private HttpContext httpContext;    
 
     private JavaScriptSerializer js = new JavaScriptSerializer();
 
@@ -44,9 +44,9 @@ public class RequestProcess
     /// 构造函数
     /// </summary>
     /// <param name="_context">请求句柄</param>
-    public RequestProcess(HttpContext _context)
+    public RequestProcess(HttpContext _httpContext)
     {
-        this.context = _context;
+        this.httpContext = _httpContext;
     }
 
     /// <summary>
@@ -55,12 +55,13 @@ public class RequestProcess
     /// <returns></returns>
     public dynamic run()
     {
-        this.getContextClassAndMethod();
-        Type cInfo = null;
-        MethodInfo mInfo = null;
+        this.getContextControllerAndMethod();
+        string namespace_controller = App.Get("Namespace_Controller");
+        Type cInfo = null;              //request controller Type
+        MethodInfo mInfo = null;        //request method
         try
         {
-            cInfo = Type.GetType(this.requestObj.controller);
+            cInfo = Type.GetType(namespace_controller + '.' + this.requestObj.controller);
             mInfo = cInfo.GetMethod(this.requestObj.method);
         }
         catch(Exception)
@@ -69,26 +70,28 @@ public class RequestProcess
             throw new APIException("调用的"+errorType+"不存在", APIException.ERROR_PATH);
         }
         Assembly assembly = Assembly.GetExecutingAssembly();        //加载当前程序集
-        object controller = assembly.CreateInstance
+        object controller = assembly.CreateInstance                 //实例化controller
             (
-                this.requestObj.controller,
+                namespace_controller+ '.' + this.requestObj.controller,
                 true,
                 System.Reflection.BindingFlags.Default,
                 null,
-                new object[] { this.requestObj.data},
+                null,
                 null,
                 null
             );
-        dynamic result = mInfo.Invoke(controller, null);
-        return result;
+        ((Controller)controller).init(this.httpContext, this.requestObj.data);      //request信息初始化
+        mInfo.GetCustomAttributes(false);                                           //Attribute
+        mInfo.Invoke(controller, null);                                             //执行方法
+        return ((Controller)controller).getResult();                                //获取返回数据
     }
 
     /// <summary>
     /// 解析请求中的数据
     /// </summary>
-    private void getContextClassAndMethod()
+    private void getContextControllerAndMethod()
     {
-        StreamReader reader = new StreamReader(this.context.Request.InputStream);
+        StreamReader reader = new StreamReader(this.httpContext.Request.InputStream);
         string stringData = reader.ReadToEnd();
         this.requestObj = js.Deserialize<RequestObject>(stringData);
     }

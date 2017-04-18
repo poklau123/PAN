@@ -4,6 +4,7 @@ using System;
 using System.Web;
 using System.Web.Script.Serialization;
 
+
 public class Handler : IHttpHandler {
 
     /// <summary>
@@ -18,7 +19,7 @@ public class Handler : IHttpHandler {
 
     JavaScriptSerializer js = new JavaScriptSerializer();
     RetMessageBag retBag = null;
-
+    
     public void ProcessRequest (HttpContext context) {
         context.Response.ContentType = "application/json";
 
