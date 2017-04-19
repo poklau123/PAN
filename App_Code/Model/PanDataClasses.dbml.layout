@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="PanDataClasses">
+  <DataContextMoniker Name="/PanDataClassesDataContext" />
+  <nestedChildShapes>
+    <classShape Id="8fa00f04-f437-4a6d-838b-67d66b5f9611" absoluteBounds="0.75, 0.75, 2, 2.4612756347656251">
+      <DataClassMoniker Name="/PanDataClassesDataContext/files" />
+      <nestedChildShapes>
+        <elementListCompartment Id="38945497-b3f4-427b-a5c4-b428adcf1c5f" absoluteBounds="0.765, 1.21, 1.9700000000000002, 1.901275634765625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="1e47c2d0-ad66-4092-b355-b2b66f2fae51" absoluteBounds="3.75, 0.75, 2, 1.5373050944010416">
+      <DataClassMoniker Name="/PanDataClassesDataContext/users" />
+      <nestedChildShapes>
+        <elementListCompartment Id="08c2c90e-b00f-45ef-aacc-abdd3d772b60" absoluteBounds="3.765, 1.21, 1.9700000000000002, 0.97730509440104174" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="bce815ef-36b7-42f3-a0d3-b2eb4e07455e" absoluteBounds="3.75, 3.75, 2, 1.167716878255209">
+      <DataClassMoniker Name="/PanDataClassesDataContext/filetypes" />
+      <nestedChildShapes>
+        <elementListCompartment Id="6a5ee2c0-d877-4237-94ec-216018272d47" absoluteBounds="3.765, 4.21, 1.9700000000000002, 0.60771687825520826" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="3221a037-352e-4dfb-9e40-e2a6cf0e0e67" absoluteBounds="0.75, 5.75, 2, 1.9068933105468755">
+      <DataClassMoniker Name="/PanDataClassesDataContext/folders" />
+      <nestedChildShapes>
+        <elementListCompartment Id="01b185fb-0f05-40f5-b49e-f0efefb5c0fd" absoluteBounds="0.765, 6.21, 1.9700000000000002, 1.346893310546875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="05e64d7e-9772-47d8-a641-d2f3bba8e421" absoluteBounds="3.75, 5.75, 2, 1.3525109863281255">
+      <DataClassMoniker Name="/PanDataClassesDataContext/record" />
+      <nestedChildShapes>
+        <elementListCompartment Id="dc8fe889-a71d-4f75-8f27-ddfd168a00cc" absoluteBounds="3.765, 6.21, 1.9700000000000002, 0.792510986328125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>
