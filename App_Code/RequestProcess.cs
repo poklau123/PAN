@@ -2,7 +2,7 @@
 using System.IO;
 using System.Reflection;
 using System.Web;
-using System.Web.Script.Serialization;
+using Newtonsoft.Json;
 using PAN.Controller;
 using PAN.Conf;
 
@@ -34,9 +34,7 @@ public class RequestProcess
     /// HttpContext句柄
     /// </summary>
     private HttpContext httpContext;    
-
-    private JavaScriptSerializer js = new JavaScriptSerializer();
-
+    
     RequestObject requestObj;
 
 
@@ -93,6 +91,6 @@ public class RequestProcess
     {
         StreamReader reader = new StreamReader(this.httpContext.Request.InputStream);
         string stringData = reader.ReadToEnd();
-        this.requestObj = js.Deserialize<RequestObject>(stringData);
+        this.requestObj = JsonConvert.DeserializeObject<RequestObject>(stringData);
     }
 }

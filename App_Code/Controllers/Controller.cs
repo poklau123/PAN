@@ -1,5 +1,5 @@
 ﻿using System.Web;
-using System.Web.Script.Serialization;
+using Newtonsoft.Json;
 
 namespace PAN.Controller
 {
@@ -20,9 +20,7 @@ namespace PAN.Controller
         /// 传出数据
         /// </summary>
         protected dynamic resultData;
-
-        JavaScriptSerializer js = new JavaScriptSerializer();
-
+        
         public Controller()
         {
 
@@ -36,7 +34,7 @@ namespace PAN.Controller
 
         public dynamic getResult()
         {
-            return js.Serialize(this.resultData);
+            return JsonConvert.SerializeObject(this.resultData);
         }
     }
 }

@@ -2,7 +2,7 @@
 
 using System;
 using System.Web;
-using System.Web.Script.Serialization;
+using Newtonsoft.Json;
 
 
 public class Handler : IHttpHandler {
@@ -17,9 +17,8 @@ public class Handler : IHttpHandler {
         public dynamic data { get; set; }        //当code为0时此值有效
     }
 
-    JavaScriptSerializer js = new JavaScriptSerializer();
     RetMessageBag retBag = null;
-    
+
     public void ProcessRequest (HttpContext context) {
         context.Response.ContentType = "application/json";
 
@@ -52,8 +51,8 @@ public class Handler : IHttpHandler {
         }
         finally
         {
-            context.Response.Write(js.Serialize(retBag));
-        }        
+            context.Response.Write(JsonConvert.SerializeObject(retBag));
+        }
     }
 
     public bool IsReusable {

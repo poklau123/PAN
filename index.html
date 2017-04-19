@@ -61,9 +61,9 @@
     <script>
         (function () {
             $.sendData({
-                ctl: 'MyController',
-                mtd: 'MyMethod',
-                data: { name: '张三', value: 'value' }
+                ctl: 'AuthController',
+                mtd: 'Register',
+                data: { name: '张三', value: 'value', arr: [{ val: 1 }, {val: 2}] }
             }).done(function (data) {
                 console.log(data);
             });
