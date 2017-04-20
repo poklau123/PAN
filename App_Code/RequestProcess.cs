@@ -79,6 +79,7 @@ public class RequestProcess
                 null
             );
         ((Controller)controller).init(this.httpContext, this.requestObj.data);      //request信息初始化
+        cInfo.GetCustomAttributes(false);                                           //Attribute
         mInfo.GetCustomAttributes(false);                                           //Attribute
         mInfo.Invoke(controller, null);                                             //执行方法
         return ((Controller)controller).getResult();                                //获取返回数据

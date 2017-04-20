@@ -23,7 +23,8 @@ namespace PAN.Conf
             dict.Add("Authentication", new Dictionary<string, dynamic>
             {
                 {"Driver", "SESSION"},
-                {"Key", "AUTH"}
+                {"Key", "AUTH"},
+                {"TimeOut", 120 }
             });
         }
 

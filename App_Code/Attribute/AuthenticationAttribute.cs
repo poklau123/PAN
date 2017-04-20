@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.SessionState;
 using PAN.Conf;
 
 namespace PAN.Attribute
@@ -14,7 +15,11 @@ namespace PAN.Attribute
     {
         public AuthenticationAttribute()
         {
-            throw new APIException("请登录后操作", APIException.ERROR_NOLOGIN);
+            dynamic session = HttpContext.Current.Session[App.Get("Authentication")["Key"]];
+            if(session == null)
+            {
+                throw new APIException("请登录后操作", APIException.ERROR_NOLOGIN);
+            }            
         }
     }
 }

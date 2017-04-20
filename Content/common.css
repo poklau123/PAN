@@ -1,7 +1,35 @@
-﻿body {
+﻿*{
+    font-family: 'Microsoft YaHei';
+}
+
+.glyphicon{
+    margin-right: 6px;
+}
+
+body {
 }
 
 /*登录页*/
-.login-area{
+.login-area, .register-area{
     margin-top:100px;
 }
+
+/*导航条*/
+.navbar-brand{
+    background-image: url(../images/logo.svg);
+    background-repeat: no-repeat;
+    background-size: 50px 50px;
+    padding-left:50px;
+    color:#1296DB !important;
+}
+.dropdown-toggle{
+    text-shadow: 1px 1px 3px gray !important;
+}
+
+/*home.html*/
+.filetype_area a img{
+    width: 20px;
+    margin-right: 6px;
+}
+
+

@@ -1,5 +1,6 @@
-﻿using System.Web;
-using Newtonsoft.Json;
+﻿using System;
+using System.Web;
+using PAN.Conf;
 
 namespace PAN.Controller
 {
@@ -23,18 +24,35 @@ namespace PAN.Controller
         
         public Controller()
         {
-
+            resultData = null;
         }
         
+        /// <summary>
+        /// 初始化
+        /// </summary>
+        /// <param name="httpContext"></param>
+        /// <param name="requestData"></param>
         public void init(HttpContext httpContext, dynamic requestData)
         {
             this.httpContext = httpContext;
             this.requestData = requestData;
         }
 
+        /// <summary>
+        /// 获取控制器处理的结果（传出数据）
+        /// </summary>
+        /// <returns></returns>
         public dynamic getResult()
         {
-            return JsonConvert.SerializeObject(this.resultData);
+            return this.resultData;
+        }
+
+        public Int32 uid
+        {
+            get
+            {
+                return Convert.ToInt32(this.httpContext.Session[App.Get("Authentication")["Key"]]);
+            }
         }
     }
 }

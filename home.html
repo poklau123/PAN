@@ -1,0 +1,214 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>我的云盘</title>
+	<meta charset="utf-8" />
+    <link href="Content/bootstrap.css" rel="stylesheet" />
+    <link href="Content/bootstrap-theme.css" rel="stylesheet" />
+    <link href="Content/toastr.css" rel="stylesheet" />
+    <link href="Content/common.css" rel="stylesheet" />
+</head>
+<body>
+    <nav class="navbar navbar-default navbar-static-top">
+        <div class="container">
+            <div class="navbar-header">
+                <a href="./home.html" class="navbar-brand"><b>我的云盘</b></a>
+            </div>
+            <div class="collapse navbar-collapse" id="app-navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="true">
+                            <i class="glyphicon glyphicon-user"></i>
+                            <span class="name">刘博</span>
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a id="logoutBtn" href="javascript:;"><i class="glyphicon glyphicon-off"></i> 退出登录</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-2 col-md-2 filetype_area">
+                <a href="javascript:;" class="list-group-item active">
+                    <img src="images/list.svg" />全部文件
+                </a>
+                <a href="javascript:;" class="list-group-item">
+                    <img src="images/picture.svg" />图片
+                </a>
+                <a href="javascript:;" class="list-group-item">
+                    <img src="images/document.svg" /> 文档
+                </a>
+                <a href="javascript:;" class="list-group-item">
+                    <img src="images/video.svg" />视频
+                </a>
+                <a href="javascript:;" class="list-group-item">
+                    <img src="images/music.svg" />音乐
+                </a>
+                <a href="javascript:;" class="list-group-item">
+                    <img src="images/zip.svg" />压缩包
+                </a>
+                <a href="javascript:;" class="list-group-item">
+                    <img src="images/file.svg" />其它
+                </a>
+                <a href="javascript:;" class="list-group-item">
+                    <img src="images/recycle.svg" />回收站
+                </a>
+            </div>
+            <div class="col-lg-10 col-md 10">
+                <div class="filelist_area">
+                    <div class="menus" style="overflow:hidden">
+                        <div class="col-md-8 col-lg-8" style="padding-left:0">
+                            <button class="btn btn-success btn-sm">
+                                <i class="glyphicon glyphicon-upload"></i>上传文件
+                            </button>
+                            <button class="btn btn-default btn-sm">
+                                <i class="glyphicon glyphicon-folder-open"></i>新建文件夹
+                            </button>
+                        </div>
+                        <div class="col-md-4 col-lg-4" style="padding-right:0">
+                            <div class="input-group pull-right">
+                                <input type="text" class="form-control" placeholder="搜索文件名" />
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-search"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="current" style="overflow:hidden;font-size:12px;padding:5px 0">
+                        <span class="pull-left">全部文件</span>
+                        <span class="pull-right">当前目录共个文件</span>
+                    </div>
+                    <div class="filelists">
+                        <table class="table" style="width:100%;table-layout:fixed">
+                            <thead>
+                                <tr>
+                                    <th width="80">
+                                        <input type="checkbox" />
+                                        <span>文件名</span>
+                                    </th>
+                                    <th width="20">
+                                        大小
+                                    </th>
+                                    <th width="20">
+                                        修改日期
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody style="font-size:12px;">
+                                <tr>
+                                    <td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis">
+                                        <input type="checkbox" />
+                                        <a href="javascript:;">
+                                            <img src="images/folder.svg" style="height:30px;" />
+                                            <span class="filename">文件夹</span>
+                                        </a>                                        
+                                    </td>
+                                    <td style="line-height:2">-</td>
+                                    <td style="line-height:2">2017-4-20 15:30</td>
+                                </tr>
+                                <tr>
+                                    <td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis">
+                                        <input type="checkbox" />
+                                        <a href="javascript:;">
+                                            <img src="images/picture.svg" style="height:30px;" />
+                                            <span class="filename">图骗</span>
+                                        </a>                                        
+                                    </td>
+                                    <td style="line-height:2">1024KB</td>
+                                    <td style="line-height:2">2017-4-20 15:30</td>
+                                </tr>
+                                <tr>
+                                    <td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis">
+                                        <input type="checkbox" />
+                                        <a href="javascript:;">
+                                            <img src="images/document.svg" style="height:30px;" />
+                                            <span class="filename">文档</span>
+                                        </a>                                        
+                                    </td>
+                                    <td style="line-height:2">1024KB</td>
+                                    <td style="line-height:2">2017-4-20 15:30</td>
+                                </tr>
+                                <tr>
+                                    <td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis">
+                                        <input type="checkbox" />
+                                        <a href="javascript:;">
+                                            <img src="images/video.svg" style="height:30px;" />
+                                            <span class="filename">视频</span>
+                                        </a>                                        
+                                    </td>
+                                    <td style="line-height:2">1024KB</td>
+                                    <td style="line-height:2">2017-4-20 15:30</td>
+                                </tr>
+                                <tr>
+                                    <td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis">
+                                        <input type="checkbox" />
+                                        <a href="javascript:;">
+                                            <img src="images/music.svg" style="height:30px;" />
+                                            <span class="filename">音乐</span>
+                                        </a>
+                                    </td>
+                                    <td style="line-height:2">1024KB</td>
+                                    <td style="line-height:2">2017-4-20 15:30</td>
+                                </tr>
+                                <tr>
+                                    <td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis">
+                                        <input type="checkbox" />
+                                        <a href="javascript:;">
+                                            <img src="images/zip.svg" style="height:30px;" />
+                                            <span class="filename">压缩包</span>
+                                        </a>
+                                    </td>
+                                    <td style="line-height:2">1024KB</td>
+                                    <td style="line-height:2">2017-4-20 15:30</td>
+                                </tr>
+                                <tr>
+                                    <td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis">
+                                        <input type="checkbox" />
+                                        <a href="javascript:;">
+                                            <img src="images/file.svg" style="height:30px;" />
+                                            <span class="filename">其它</span>
+                                        </a>
+                                    </td>
+                                    <td style="line-height:2">1024KB</td>
+                                    <td style="line-height:2">2017-4-20 15:30</td>
+                                </tr>
+                            </tbody>
+                            <tfoot></tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="Scripts/jquery-1.9.1.js"></script>
+    <script src="Scripts/bootstrap.js"></script>
+    <script src="Scripts/toastr.js"></script>
+    <script src="Scripts/common.js"></script>
+    <script>
+        (function () {
+            $(window).resize(function () {
+                var window_height = window.outerHeight;
+                var filelist_area_height = window_height - 71;
+                $('.filelist_area').css('height',filelist_area_height+'px');
+            });
+            $(window).resize();
+            //获取我的信息
+            $.sendData({
+                ctl: 'HomeController',
+                mtd: 'MyInfo'
+            }).done(function (data) {
+                checkRetCode(data, function (info) {
+                    console.log(info);
+                });
+            });
+        })();
+    </script>
+</body>
+
+</html>

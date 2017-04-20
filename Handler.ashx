@@ -2,32 +2,21 @@
 
 using System;
 using System.Web;
+using System.Web.SessionState;
 using Newtonsoft.Json;
 
 
-public class Handler : IHttpHandler {
-
-    /// <summary>
-    /// 返回信息数据格式
-    /// </summary>
-    class RetMessageBag
-    {
-        public int code { get; set; }           //成功执行时为0,
-        public string msg { get; set; }         //当code不为0时此值有效
-        public dynamic data { get; set; }        //当code为0时此值有效
-    }
-
-    RetMessageBag retBag = null;
+public class Handler : IHttpHandler, IRequiresSessionState  {
 
     public void ProcessRequest (HttpContext context) {
         context.Response.ContentType = "application/json";
-
+        object retBag = null;
         try
         {
             RequestProcess rp = new RequestProcess(context);
             Object data = rp.run();
 
-            retBag = new RetMessageBag
+            retBag = new
             {
                 code = 0,
                 data = data
@@ -35,7 +24,7 @@ public class Handler : IHttpHandler {
         }
         catch (APIException e)
         {
-            retBag = new RetMessageBag
+            retBag = new
             {
                 code = e.code,
                 msg = e.Message
@@ -43,7 +32,8 @@ public class Handler : IHttpHandler {
         }
         catch (Exception e)
         {
-            retBag = new RetMessageBag
+            e = e.InnerException == null ? e : e.InnerException;
+            retBag = new
             {
                 code = APIException.ERROR_RUNTIME,
                 msg = e.Message
@@ -51,7 +41,7 @@ public class Handler : IHttpHandler {
         }
         finally
         {
-            context.Response.Write(JsonConvert.SerializeObject(retBag));
+            context.Response.Write(JsonConvert.SerializeObject(retBag, Formatting.Indented, new JsonSerializerSettings{ NullValueHandling = NullValueHandling.Ignore}));
         }
     }
 
