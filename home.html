@@ -19,12 +19,12 @@
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
                         <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="true">
-                            <i class="glyphicon glyphicon-user"></i>
+                            <img src="images/user.svg"/>
                             <span class="name">刘博</span>
                             <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a id="logoutBtn" href="javascript:;"><i class="glyphicon glyphicon-off"></i> 退出登录</a></li>
+                            <li><a id="logoutBtn" href="javascript:;"><i class="glyphicon glyphicon-off"></i>退出登录</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -41,7 +41,7 @@
                     <img src="images/picture.svg" />图片
                 </a>
                 <a href="javascript:;" class="list-group-item">
-                    <img src="images/document.svg" /> 文档
+                    <img src="images/document.svg" />文档
                 </a>
                 <a href="javascript:;" class="list-group-item">
                     <img src="images/video.svg" />视频
@@ -58,19 +58,25 @@
                 <a href="javascript:;" class="list-group-item">
                     <img src="images/recycle.svg" />回收站
                 </a>
+                <a href="javascript:;" class="list-group-item">
+                    <img src="images/recent.svg" />最近下载
+                </a>
             </div>
             <div class="col-lg-10 col-md 10">
                 <div class="filelist_area">
-                    <div class="menus" style="overflow:hidden">
-                        <div class="col-md-8 col-lg-8" style="padding-left:0">
+                    <div class="menus">
+                        <div class="col-md-8 col-lg-8 col-sm-8">
                             <button class="btn btn-success btn-sm">
                                 <i class="glyphicon glyphicon-upload"></i>上传文件
                             </button>
                             <button class="btn btn-default btn-sm">
                                 <i class="glyphicon glyphicon-folder-open"></i>新建文件夹
                             </button>
+                            <button class="btn btn-danger btn-sm multiDelBtn">
+                                <i class="glyphicon glyphicon-remove"></i>删除
+                            </button>  
                         </div>
-                        <div class="col-md-4 col-lg-4" style="padding-right:0">
+                        <div class="col-md-4 col-lg-4 col-sm-4">
                             <div class="input-group pull-right">
                                 <input type="text" class="form-control" placeholder="搜索文件名" />
                                 <span class="input-group-addon">
@@ -79,12 +85,12 @@
                             </div>
                         </div>
                     </div>
-                    <div class="current" style="overflow:hidden;font-size:12px;padding:5px 0">
+                    <div class="current">
                         <span class="pull-left">全部文件</span>
                         <span class="pull-right">当前目录共个文件</span>
                     </div>
                     <div class="filelists">
-                        <table class="table" style="width:100%;table-layout:fixed">
+                        <table class="table">
                             <thead>
                                 <tr>
                                     <th width="80">
@@ -99,83 +105,846 @@
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody style="font-size:12px;">
+                            <tbody>
                                 <tr>
-                                    <td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis">
-                                        <input type="checkbox" />
-                                        <a href="javascript:;">
-                                            <img src="images/folder.svg" style="height:30px;" />
+                                    <td>
+                                        <span class="cbdiv">
+                                            <input type="checkbox"/>
+                                        </span>
+                                        <a class="fileinfo" href="javascript:;">
+                                            <img src="images/folder.svg" />
                                             <span class="filename">文件夹</span>
-                                        </a>                                        
+                                        </a>
+                                        <div class="pull-right operate">
+                                            <a href="javascript:;">
+                                                <img src="images/download.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/rename.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/delete.svg" />
+                                            </a>
+                                        </div>
                                     </td>
-                                    <td style="line-height:2">-</td>
-                                    <td style="line-height:2">2017-4-20 15:30</td>
+                                    <td>-</td>
+                                    <td>2017-4-20 15:30</td>
                                 </tr>
                                 <tr>
-                                    <td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis">
-                                        <input type="checkbox" />
-                                        <a href="javascript:;">
-                                            <img src="images/picture.svg" style="height:30px;" />
-                                            <span class="filename">图骗</span>
-                                        </a>                                        
+                                    <td>
+                                        <span class="cbdiv">
+                                            <input type="checkbox" />
+                                        </span>
+                                        <a class="fileinfo" href="javascript:;">
+                                            <img src="images/picture.svg" />
+                                            <span class="filename">图片</span>
+                                        </a>
+                                        <div class="pull-right operate">
+                                            <a href="javascript:;">
+                                                <img src="images/download.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/rename.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/delete.svg" />
+                                            </a>
+                                        </div>
                                     </td>
-                                    <td style="line-height:2">1024KB</td>
-                                    <td style="line-height:2">2017-4-20 15:30</td>
+                                    <td>-</td>
+                                    <td>2017-4-20 15:30</td>
                                 </tr>
                                 <tr>
-                                    <td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis">
-                                        <input type="checkbox" />
-                                        <a href="javascript:;">
-                                            <img src="images/document.svg" style="height:30px;" />
+                                    <td>
+                                        <span class="cbdiv">
+                                            <input type="checkbox" />
+                                        </span>
+                                        <a class="fileinfo" href="javascript:;">
+                                            <img src="images/document.svg" />
                                             <span class="filename">文档</span>
-                                        </a>                                        
+                                        </a>
+                                        <div class="pull-right operate">
+                                            <a href="javascript:;">
+                                                <img src="images/download.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/rename.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/delete.svg" />
+                                            </a>
+                                        </div>
                                     </td>
-                                    <td style="line-height:2">1024KB</td>
-                                    <td style="line-height:2">2017-4-20 15:30</td>
+                                    <td>-</td>
+                                    <td>2017-4-20 15:30</td>
                                 </tr>
                                 <tr>
-                                    <td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis">
-                                        <input type="checkbox" />
-                                        <a href="javascript:;">
-                                            <img src="images/video.svg" style="height:30px;" />
+                                    <td>
+                                        <span class="cbdiv">
+                                            <input type="checkbox" />
+                                        </span>
+                                        <a class="fileinfo" href="javascript:;">
+                                            <img src="images/video.svg" />
                                             <span class="filename">视频</span>
-                                        </a>                                        
+                                        </a>
+                                        <div class="pull-right operate">
+                                            <a href="javascript:;">
+                                                <img src="images/download.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/rename.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/delete.svg" />
+                                            </a>
+                                        </div>
                                     </td>
-                                    <td style="line-height:2">1024KB</td>
-                                    <td style="line-height:2">2017-4-20 15:30</td>
+                                    <td>-</td>
+                                    <td>2017-4-20 15:30</td>
                                 </tr>
                                 <tr>
-                                    <td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis">
-                                        <input type="checkbox" />
-                                        <a href="javascript:;">
-                                            <img src="images/music.svg" style="height:30px;" />
+                                    <td>
+                                        <span class="cbdiv">
+                                            <input type="checkbox" />
+                                        </span>
+                                        <a class="fileinfo" href="javascript:;">
+                                            <img src="images/music.svg" />
                                             <span class="filename">音乐</span>
                                         </a>
+                                        <div class="pull-right operate">
+                                            <a href="javascript:;">
+                                                <img src="images/download.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/rename.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/delete.svg" />
+                                            </a>
+                                        </div>
                                     </td>
-                                    <td style="line-height:2">1024KB</td>
-                                    <td style="line-height:2">2017-4-20 15:30</td>
+                                    <td>-</td>
+                                    <td>2017-4-20 15:30</td>
                                 </tr>
                                 <tr>
-                                    <td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis">
-                                        <input type="checkbox" />
-                                        <a href="javascript:;">
-                                            <img src="images/zip.svg" style="height:30px;" />
+                                    <td>
+                                        <span class="cbdiv">
+                                            <input type="checkbox" />
+                                        </span>
+                                        <a class="fileinfo" href="javascript:;">
+                                            <img src="images/zip.svg" />
                                             <span class="filename">压缩包</span>
                                         </a>
+                                        <div class="pull-right operate">
+                                            <a href="javascript:;">
+                                                <img src="images/download.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/rename.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/delete.svg" />
+                                            </a>
+                                        </div>
                                     </td>
-                                    <td style="line-height:2">1024KB</td>
-                                    <td style="line-height:2">2017-4-20 15:30</td>
+                                    <td>-</td>
+                                    <td>2017-4-20 15:30</td>
                                 </tr>
                                 <tr>
-                                    <td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis">
-                                        <input type="checkbox" />
-                                        <a href="javascript:;">
-                                            <img src="images/file.svg" style="height:30px;" />
-                                            <span class="filename">其它</span>
+                                    <td>
+                                        <span class="cbdiv">
+                                            <input type="checkbox" />
+                                        </span>
+                                        <a class="fileinfo" href="javascript:;">
+                                            <img src="images/file.svg" />
+                                            <span class="filename">其它类型文件</span>
                                         </a>
+                                        <div class="pull-right operate">
+                                            <a href="javascript:;">
+                                                <img src="images/download.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/rename.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/delete.svg" />
+                                            </a>
+                                        </div>
                                     </td>
-                                    <td style="line-height:2">1024KB</td>
-                                    <td style="line-height:2">2017-4-20 15:30</td>
+                                    <td>-</td>
+                                    <td>2017-4-20 15:30</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="cbdiv">
+                                            <input type="checkbox" />
+                                        </span>
+                                        <a class="fileinfo" href="javascript:;">
+                                            <img src="images/folder.svg" />
+                                            <span class="filename">文件夹</span>
+                                        </a>
+                                        <div class="pull-right operate">
+                                            <a href="javascript:;">
+                                                <img src="images/download.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/rename.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/delete.svg" />
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td>-</td>
+                                    <td>2017-4-20 15:30</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="cbdiv">
+                                            <input type="checkbox" />
+                                        </span>
+                                        <a class="fileinfo" href="javascript:;">
+                                            <img src="images/picture.svg" />
+                                            <span class="filename">图片</span>
+                                        </a>
+                                        <div class="pull-right operate">
+                                            <a href="javascript:;">
+                                                <img src="images/download.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/rename.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/delete.svg" />
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td>-</td>
+                                    <td>2017-4-20 15:30</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="cbdiv">
+                                            <input type="checkbox" />
+                                        </span>
+                                        <a class="fileinfo" href="javascript:;">
+                                            <img src="images/document.svg" />
+                                            <span class="filename">文档</span>
+                                        </a>
+                                        <div class="pull-right operate">
+                                            <a href="javascript:;">
+                                                <img src="images/download.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/rename.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/delete.svg" />
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td>-</td>
+                                    <td>2017-4-20 15:30</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="cbdiv">
+                                            <input type="checkbox" />
+                                        </span>
+                                        <a class="fileinfo" href="javascript:;">
+                                            <img src="images/video.svg" />
+                                            <span class="filename">视频</span>
+                                        </a>
+                                        <div class="pull-right operate">
+                                            <a href="javascript:;">
+                                                <img src="images/download.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/rename.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/delete.svg" />
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td>-</td>
+                                    <td>2017-4-20 15:30</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="cbdiv">
+                                            <input type="checkbox" />
+                                        </span>
+                                        <a class="fileinfo" href="javascript:;">
+                                            <img src="images/music.svg" />
+                                            <span class="filename">音乐</span>
+                                        </a>
+                                        <div class="pull-right operate">
+                                            <a href="javascript:;">
+                                                <img src="images/download.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/rename.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/delete.svg" />
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td>-</td>
+                                    <td>2017-4-20 15:30</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="cbdiv">
+                                            <input type="checkbox" />
+                                        </span>
+                                        <a class="fileinfo" href="javascript:;">
+                                            <img src="images/zip.svg" />
+                                            <span class="filename">压缩包</span>
+                                        </a>
+                                        <div class="pull-right operate">
+                                            <a href="javascript:;">
+                                                <img src="images/download.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/rename.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/delete.svg" />
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td>-</td>
+                                    <td>2017-4-20 15:30</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="cbdiv">
+                                            <input type="checkbox" />
+                                        </span>
+                                        <a class="fileinfo" href="javascript:;">
+                                            <img src="images/file.svg" />
+                                            <span class="filename">其它类型文件</span>
+                                        </a>
+                                        <div class="pull-right operate">
+                                            <a href="javascript:;">
+                                                <img src="images/download.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/rename.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/delete.svg" />
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td>-</td>
+                                    <td>2017-4-20 15:30</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="cbdiv">
+                                            <input type="checkbox" />
+                                        </span>
+                                        <a class="fileinfo" href="javascript:;">
+                                            <img src="images/folder.svg" />
+                                            <span class="filename">文件夹</span>
+                                        </a>
+                                        <div class="pull-right operate">
+                                            <a href="javascript:;">
+                                                <img src="images/download.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/rename.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/delete.svg" />
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td>-</td>
+                                    <td>2017-4-20 15:30</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="cbdiv">
+                                            <input type="checkbox" />
+                                        </span>
+                                        <a class="fileinfo" href="javascript:;">
+                                            <img src="images/picture.svg" />
+                                            <span class="filename">图片</span>
+                                        </a>
+                                        <div class="pull-right operate">
+                                            <a href="javascript:;">
+                                                <img src="images/download.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/rename.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/delete.svg" />
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td>-</td>
+                                    <td>2017-4-20 15:30</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="cbdiv">
+                                            <input type="checkbox" />
+                                        </span>
+                                        <a class="fileinfo" href="javascript:;">
+                                            <img src="images/document.svg" />
+                                            <span class="filename">文档</span>
+                                        </a>
+                                        <div class="pull-right operate">
+                                            <a href="javascript:;">
+                                                <img src="images/download.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/rename.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/delete.svg" />
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td>-</td>
+                                    <td>2017-4-20 15:30</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="cbdiv">
+                                            <input type="checkbox" />
+                                        </span>
+                                        <a class="fileinfo" href="javascript:;">
+                                            <img src="images/video.svg" />
+                                            <span class="filename">视频</span>
+                                        </a>
+                                        <div class="pull-right operate">
+                                            <a href="javascript:;">
+                                                <img src="images/download.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/rename.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/delete.svg" />
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td>-</td>
+                                    <td>2017-4-20 15:30</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="cbdiv">
+                                            <input type="checkbox" />
+                                        </span>
+                                        <a class="fileinfo" href="javascript:;">
+                                            <img src="images/music.svg" />
+                                            <span class="filename">音乐</span>
+                                        </a>
+                                        <div class="pull-right operate">
+                                            <a href="javascript:;">
+                                                <img src="images/download.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/rename.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/delete.svg" />
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td>-</td>
+                                    <td>2017-4-20 15:30</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="cbdiv">
+                                            <input type="checkbox" />
+                                        </span>
+                                        <a class="fileinfo" href="javascript:;">
+                                            <img src="images/zip.svg" />
+                                            <span class="filename">压缩包</span>
+                                        </a>
+                                        <div class="pull-right operate">
+                                            <a href="javascript:;">
+                                                <img src="images/download.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/rename.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/delete.svg" />
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td>-</td>
+                                    <td>2017-4-20 15:30</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="cbdiv">
+                                            <input type="checkbox" />
+                                        </span>
+                                        <a class="fileinfo" href="javascript:;">
+                                            <img src="images/file.svg" />
+                                            <span class="filename">其它类型文件</span>
+                                        </a>
+                                        <div class="pull-right operate">
+                                            <a href="javascript:;">
+                                                <img src="images/download.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/rename.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/delete.svg" />
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td>-</td>
+                                    <td>2017-4-20 15:30</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="cbdiv">
+                                            <input type="checkbox" />
+                                        </span>
+                                        <a class="fileinfo" href="javascript:;">
+                                            <img src="images/folder.svg" />
+                                            <span class="filename">文件夹</span>
+                                        </a>
+                                        <div class="pull-right operate">
+                                            <a href="javascript:;">
+                                                <img src="images/download.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/rename.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/delete.svg" />
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td>-</td>
+                                    <td>2017-4-20 15:30</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="cbdiv">
+                                            <input type="checkbox" />
+                                        </span>
+                                        <a class="fileinfo" href="javascript:;">
+                                            <img src="images/picture.svg" />
+                                            <span class="filename">图片</span>
+                                        </a>
+                                        <div class="pull-right operate">
+                                            <a href="javascript:;">
+                                                <img src="images/download.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/rename.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/delete.svg" />
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td>-</td>
+                                    <td>2017-4-20 15:30</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="cbdiv">
+                                            <input type="checkbox" />
+                                        </span>
+                                        <a class="fileinfo" href="javascript:;">
+                                            <img src="images/document.svg" />
+                                            <span class="filename">文档</span>
+                                        </a>
+                                        <div class="pull-right operate">
+                                            <a href="javascript:;">
+                                                <img src="images/download.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/rename.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/delete.svg" />
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td>-</td>
+                                    <td>2017-4-20 15:30</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="cbdiv">
+                                            <input type="checkbox" />
+                                        </span>
+                                        <a class="fileinfo" href="javascript:;">
+                                            <img src="images/video.svg" />
+                                            <span class="filename">视频</span>
+                                        </a>
+                                        <div class="pull-right operate">
+                                            <a href="javascript:;">
+                                                <img src="images/download.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/rename.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/delete.svg" />
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td>-</td>
+                                    <td>2017-4-20 15:30</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="cbdiv">
+                                            <input type="checkbox" />
+                                        </span>
+                                        <a class="fileinfo" href="javascript:;">
+                                            <img src="images/music.svg" />
+                                            <span class="filename">音乐</span>
+                                        </a>
+                                        <div class="pull-right operate">
+                                            <a href="javascript:;">
+                                                <img src="images/download.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/rename.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/delete.svg" />
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td>-</td>
+                                    <td>2017-4-20 15:30</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="cbdiv">
+                                            <input type="checkbox" />
+                                        </span>
+                                        <a class="fileinfo" href="javascript:;">
+                                            <img src="images/zip.svg" />
+                                            <span class="filename">压缩包</span>
+                                        </a>
+                                        <div class="pull-right operate">
+                                            <a href="javascript:;">
+                                                <img src="images/download.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/rename.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/delete.svg" />
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td>-</td>
+                                    <td>2017-4-20 15:30</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="cbdiv">
+                                            <input type="checkbox" />
+                                        </span>
+                                        <a class="fileinfo" href="javascript:;">
+                                            <img src="images/file.svg" />
+                                            <span class="filename">其它类型文件</span>
+                                        </a>
+                                        <div class="pull-right operate">
+                                            <a href="javascript:;">
+                                                <img src="images/download.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/rename.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/delete.svg" />
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td>-</td>
+                                    <td>2017-4-20 15:30</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="cbdiv">
+                                            <input type="checkbox" />
+                                        </span>
+                                        <a class="fileinfo" href="javascript:;">
+                                            <img src="images/folder.svg" />
+                                            <span class="filename">文件夹</span>
+                                        </a>
+                                        <div class="pull-right operate">
+                                            <a href="javascript:;">
+                                                <img src="images/download.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/rename.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/delete.svg" />
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td>-</td>
+                                    <td>2017-4-20 15:30</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="cbdiv">
+                                            <input type="checkbox" />
+                                        </span>
+                                        <a class="fileinfo" href="javascript:;">
+                                            <img src="images/picture.svg" />
+                                            <span class="filename">图片</span>
+                                        </a>
+                                        <div class="pull-right operate">
+                                            <a href="javascript:;">
+                                                <img src="images/download.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/rename.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/delete.svg" />
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td>-</td>
+                                    <td>2017-4-20 15:30</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="cbdiv">
+                                            <input type="checkbox" />
+                                        </span>
+                                        <a class="fileinfo" href="javascript:;">
+                                            <img src="images/document.svg" />
+                                            <span class="filename">文档</span>
+                                        </a>
+                                        <div class="pull-right operate">
+                                            <a href="javascript:;">
+                                                <img src="images/download.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/rename.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/delete.svg" />
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td>-</td>
+                                    <td>2017-4-20 15:30</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="cbdiv">
+                                            <input type="checkbox" />
+                                        </span>
+                                        <a class="fileinfo" href="javascript:;">
+                                            <img src="images/video.svg" />
+                                            <span class="filename">视频</span>
+                                        </a>
+                                        <div class="pull-right operate">
+                                            <a href="javascript:;">
+                                                <img src="images/download.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/rename.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/delete.svg" />
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td>-</td>
+                                    <td>2017-4-20 15:30</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="cbdiv">
+                                            <input type="checkbox" />
+                                        </span>
+                                        <a class="fileinfo" href="javascript:;">
+                                            <img src="images/music.svg" />
+                                            <span class="filename">音乐</span>
+                                        </a>
+                                        <div class="pull-right operate">
+                                            <a href="javascript:;">
+                                                <img src="images/download.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/rename.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/delete.svg" />
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td>-</td>
+                                    <td>2017-4-20 15:30</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="cbdiv">
+                                            <input type="checkbox" />
+                                        </span>
+                                        <a class="fileinfo" href="javascript:;">
+                                            <img src="images/zip.svg" />
+                                            <span class="filename">压缩包</span>
+                                        </a>
+                                        <div class="pull-right operate">
+                                            <a href="javascript:;">
+                                                <img src="images/download.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/rename.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/delete.svg" />
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td>-</td>
+                                    <td>2017-4-20 15:30</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="cbdiv">
+                                            <input type="checkbox" />
+                                        </span>
+                                        <a class="fileinfo" href="javascript:;">
+                                            <img src="images/file.svg" />
+                                            <span class="filename">其它类型文件</span>
+                                        </a>
+                                        <div class="pull-right operate">
+                                            <a href="javascript:;">
+                                                <img src="images/download.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/rename.svg" />
+                                            </a>
+                                            <a href="javascript:;">
+                                                <img src="images/delete.svg" />
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td>-</td>
+                                    <td>2017-4-20 15:30</td>
                                 </tr>
                             </tbody>
                             <tfoot></tfoot>
@@ -189,15 +958,17 @@
     <script src="Scripts/jquery-1.9.1.js"></script>
     <script src="Scripts/bootstrap.js"></script>
     <script src="Scripts/toastr.js"></script>
+    <script src="Scripts/jquery.nicescroll.js"></script>
     <script src="Scripts/common.js"></script>
     <script>
         (function () {
             $(window).resize(function () {
                 var window_height = window.outerHeight;
-                var filelist_area_height = window_height - 71;
-                $('.filelist_area').css('height',filelist_area_height+'px');
+                var filelist_height = window_height - 71 -40 -27;
+                $('.filelists').css('height', filelist_height + 'px');
             });
             $(window).resize();
+            $('.filelists').niceScroll();
             //获取我的信息
             $.sendData({
                 ctl: 'HomeController',
@@ -207,6 +978,7 @@
                     console.log(info);
                 });
             });
+
         })();
     </script>
 </body>
