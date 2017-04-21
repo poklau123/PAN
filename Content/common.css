@@ -7,6 +7,7 @@
 }
 
 body {
+    overflow:hidden;
 }
 
 /*登录页*/
@@ -22,8 +23,8 @@ body {
     padding-left:50px;
     color:#1296DB !important;
 }
-.dropdown-toggle{
-    text-shadow: 1px 1px 3px gray !important;
+.navbar-nav .dropdown-toggle img{
+    width: 20px;
 }
 
 /*home.html*/
@@ -31,5 +32,78 @@ body {
     width: 20px;
     margin-right: 6px;
 }
-
-
+.filelist_area .menus{
+    overflow:hidden;
+    padding:3px 0;
+}
+.filelist_area .menus div{
+    padding-left:0;
+    padding-right:0;
+}
+.filelist_area .menus div .multiDelBtn{
+    margin-left:20px;
+    display:none;
+}
+.filelist_area .current{
+    overflow:hidden;
+    font-size:12px;
+    padding:5px 0;
+}
+.filelists{
+    overflow:auto;
+}
+.filelists table{
+    width:100%;
+    table-layout:fixed;
+}
+.filelists table tbody{
+    font-size:12px;
+}
+.filelists table tbody a{
+    text-decoration:none;
+}
+.filelists table tbody tr:hover{
+    background-color:#F6FAFF;
+    border-color:#DAEBFE;
+}
+.filelists table tbody tr td{
+    line-height:2;
+}
+.filelists table tbody tr td:first-child{
+    line-height:0;
+}
+.filelists table tbody tr td:first-child .cbdiv{
+    width:2.5%;
+    box-sizing:border-box;
+    display:inline-block;
+    position:relative;
+}
+.filelists table tbody tr td:first-child .cbdiv input[type=checkbox]{
+    position:absolute;
+    top:-25px;
+}
+.filelists table tbody tr td:first-child .fileinfo{
+    overflow: hidden;
+    width:75%;
+    display: inline-block;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    box-sizing:border-box;
+}
+.filelists table tbody tr td:first-child .fileinfo img{
+    height:30px;
+}
+.filelists table tbody tr td:first-child .operate{
+    width:20%;
+    box-sizing:border-box;
+    padding-top:4px;
+    display:none;
+}
+.filelists table tbody tr td:first-child .operate a{
+    display:inline-block;
+    width:30%;
+}
+.filelists table tbody tr td:first-child .operate a img{
+    width:20px;
+}
