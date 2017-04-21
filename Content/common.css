@@ -40,7 +40,13 @@ body {
     padding-left:0;
     padding-right:0;
 }
-.filelist_area .menus div .multiDelBtn{
+.filelist_area .menus div #searchBtn{
+    cursor:pointer;
+}
+.filelist_area .menus div #searchBtn:hover{
+    background-color:white;
+}
+.filelist_area .menus div #multiDelBtn{
     margin-left:20px;
     display:none;
 }
@@ -103,6 +109,9 @@ body {
 .filelists table tbody tr td:first-child .operate a{
     display:inline-block;
     width:30%;
+}
+.filelists table tbody tr td:first-child .operate a img:hover{
+    background-color:white;
 }
 .filelists table tbody tr td:first-child .operate a img{
     width:20px;

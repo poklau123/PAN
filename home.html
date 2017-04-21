@@ -36,31 +36,31 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-2 col-md-2 filetype_area">
-                <a href="javascript:;" class="list-group-item active">
+                <a href="javascript:;" class="list-group-item active" data-type="0">
                     <img src="images/list.svg" />全部文件
                 </a>
-                <a href="javascript:;" class="list-group-item">
+                <a href="javascript:;" class="list-group-item" data-type="1">
                     <img src="images/picture.svg" />图片
                 </a>
-                <a href="javascript:;" class="list-group-item">
+                <a href="javascript:;" class="list-group-item" data-type="2">
                     <img src="images/document.svg" />文档
                 </a>
-                <a href="javascript:;" class="list-group-item">
+                <a href="javascript:;" class="list-group-item" data-type="3">
                     <img src="images/video.svg" />视频
                 </a>
-                <a href="javascript:;" class="list-group-item">
+                <a href="javascript:;" class="list-group-item" data-type="4">
                     <img src="images/music.svg" />音乐
                 </a>
-                <a href="javascript:;" class="list-group-item">
+                <a href="javascript:;" class="list-group-item" data-type="5">
                     <img src="images/zip.svg" />压缩包
                 </a>
-                <a href="javascript:;" class="list-group-item">
+                <a href="javascript:;" class="list-group-item" data-type="6">
                     <img src="images/file.svg" />其它
                 </a>
-                <a href="javascript:;" class="list-group-item">
+                <a href="javascript:;" class="list-group-item" data-type="-1">
                     <img src="images/recycle.svg" />回收站
                 </a>
-                <a href="javascript:;" class="list-group-item">
+                <a href="javascript:;" class="list-group-item" data-type="-2">
                     <img src="images/recent.svg" />最近下载
                 </a>
             </div>
@@ -68,28 +68,28 @@
                 <div class="filelist_area">
                     <div class="menus">
                         <div class="col-md-8 col-lg-8 col-sm-8">
-                            <button class="btn btn-success btn-sm">
+                            <button class="btn btn-success btn-sm" id="uploadBtn">
                                 <i class="glyphicon glyphicon-upload"></i>上传文件
                             </button>
-                            <button class="btn btn-default btn-sm">
+                            <button class="btn btn-default btn-sm" id="addFolderBtn">
                                 <i class="glyphicon glyphicon-folder-open"></i>新建文件夹
                             </button>
-                            <button class="btn btn-danger btn-sm multiDelBtn">
+                            <button class="btn btn-danger btn-sm" id="multiDelBtn">
                                 <i class="glyphicon glyphicon-remove"></i>删除
                             </button>  
                         </div>
                         <div class="col-md-4 col-lg-4 col-sm-4">
                             <div class="input-group pull-right">
-                                <input type="text" class="form-control" placeholder="搜索文件名" />
-                                <span class="input-group-addon">
+                                <input type="text" class="form-control" placeholder="搜索文件名" id="searchContent" />
+                                <span class="input-group-addon" id="searchBtn">
                                     <span class="glyphicon glyphicon-search"></span>
                                 </span>
                             </div>
                         </div>
                     </div>
                     <div class="current">
-                        <span class="pull-left">全部文件</span>
-                        <span class="pull-right">当前目录共个文件</span>
+                        <span class="pull-left path">全部文件</span>
+                        <span class="pull-right dirinfo">当前目录共个文件</span>
                     </div>
                     <div class="filelists">
                         <table class="table">
@@ -956,21 +956,41 @@
             </div>
         </div>
     </div>
-
+    <script type="text/template">
+        <tr>
+            <td>
+                <span class="cbdiv">
+                    <input type="checkbox" />
+                </span>
+                <a class="fileinfo" href="javascript:;">
+                    <img src="images/file.svg" />
+                    <span class="filename">其它类型文件</span>
+                </a>
+                <div class="pull-right operate">
+                    <a href="javascript:;" class="download">
+                        <img src="images/download.svg" />
+                    </a>
+                    <a href="javascript:;">
+                        <img src="images/rename.svg" />
+                    </a>
+                    <a href="javascript:;">
+                        <img src="images/delete.svg" />
+                    </a>
+                </div>
+            </td>
+            <td></td>
+            <td></td>
+        </tr>
+    </script>
     <script src="Scripts/jquery-1.12.4.js"></script>
     <script src="Scripts/bootstrap.js"></script>
     <script src="Scripts/toastr.js"></script>
     <script src="Scripts/jquery.nicescroll.js"></script>
     <script src="Scripts/common.js"></script>
+    <script src="Scripts/PAN.js"></script>
     <script>
+        var Pan = new PAN();
         (function () {
-            $(window).resize(function () {
-                var window_height = window.outerHeight;
-                var filelist_height = window_height - 71 -40 -27;
-                $('.filelists').css('height', filelist_height + 'px');
-            });
-            $(window).resize();
-            $('.filelists').niceScroll();
             //获取我的信息
             $.sendData({
                 ctl: 'HomeController',
