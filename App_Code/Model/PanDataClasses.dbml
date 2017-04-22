@@ -1,13 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="PAN" Class="PanDataClassesDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="WebSettings" ConnectionString="Data Source=.;Initial Catalog=PAN;User ID=sa" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="PANConnectionString" Provider="System.Data.SqlClient" />
+  <Connection Mode="WebSettings" ConnectionString="Data Source=www.mer-joly.com;Initial Catalog=PAN;User ID=sb" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="PANConnectionString" Provider="System.Data.SqlClient" />
   <Table Name="dbo.files" Member="files">
     <Type Name="files">
       <Column Name="id" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="fol_id" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
+      <Column Name="fol_id" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="use_id" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
       <Column Name="fil_id" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
-      <Column Name="name" Type="System.String" DbType="Char(256) NOT NULL" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="VarChar(256) NOT NULL" CanBeNull="false" />
       <Column Name="size" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
-      <Column Name="guid" Type="System.String" DbType="Char(256) NOT NULL" CanBeNull="false" />
+      <Column Name="guid" Type="System.String" DbType="VarChar(1024) NOT NULL" CanBeNull="false" />
       <Column Name="softdelete" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="created_at" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="updated_at" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
@@ -16,23 +17,23 @@
   <Table Name="dbo.users" Member="users">
     <Type Name="users">
       <Column Name="id" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="name" Type="System.String" DbType="Char(60) NOT NULL" CanBeNull="false" />
-      <Column Name="password" Type="System.String" DbType="Char(100) NOT NULL" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="VarChar(60) NOT NULL" CanBeNull="false" />
+      <Column Name="password" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
       <Column Name="savedsize" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
     </Type>
   </Table>
   <Table Name="dbo.filetypes" Member="filetypes">
     <Type Name="filetypes">
       <Column Name="id" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="name" Type="System.String" DbType="Char(256) NOT NULL" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="VarChar(256) NOT NULL" CanBeNull="false" />
     </Type>
   </Table>
   <Table Name="dbo.folders" Member="folders">
     <Type Name="folders">
       <Column Name="id" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="fol_id" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
-      <Column Name="use_id" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
-      <Column Name="name" Type="System.String" DbType="Char(60) NOT NULL" CanBeNull="false" />
+      <Column Name="use_id" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="name" Type="System.String" DbType="VarChar(60) NOT NULL" CanBeNull="false" />
       <Column Name="created_at" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="updated_at" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
     </Type>
@@ -40,7 +41,7 @@
   <Table Name="dbo.record" Member="record">
     <Type Name="record">
       <Column Name="id" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="fil_id" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
+      <Column Name="fil_id" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
       <Column Name="time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
     </Type>
   </Table>

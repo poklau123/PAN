@@ -2,9 +2,8 @@
 
 using System;
 using System.Web;
-using System.Web.SessionState;
 using Newtonsoft.Json;
-
+using System.Web.SessionState;
 
 public class Handler : IHttpHandler, IRequiresSessionState  {
 
@@ -41,7 +40,8 @@ public class Handler : IHttpHandler, IRequiresSessionState  {
         }
         finally
         {
-            context.Response.Write(JsonConvert.SerializeObject(retBag, Formatting.Indented, new JsonSerializerSettings{ NullValueHandling = NullValueHandling.Ignore}));
+            string output = JsonConvert.SerializeObject(retBag, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+            context.Response.Write(output);
         }
     }
 

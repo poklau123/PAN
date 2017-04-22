@@ -126,7 +126,9 @@ namespace Model
 		
 		private decimal _id;
 		
-		private decimal _fol_id;
+		private System.Nullable<decimal> _fol_id;
+		
+		private System.Nullable<decimal> _use_id;
 		
 		private System.Nullable<decimal> _fil_id;
 		
@@ -148,8 +150,10 @@ namespace Model
     partial void OnCreated();
     partial void OnidChanging(decimal value);
     partial void OnidChanged();
-    partial void Onfol_idChanging(decimal value);
+    partial void Onfol_idChanging(System.Nullable<decimal> value);
     partial void Onfol_idChanged();
+    partial void Onuse_idChanging(System.Nullable<decimal> value);
+    partial void Onuse_idChanged();
     partial void Onfil_idChanging(System.Nullable<decimal> value);
     partial void Onfil_idChanged();
     partial void OnnameChanging(string value);
@@ -191,8 +195,8 @@ namespace Model
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_fol_id", DbType="Decimal(18,0) NOT NULL")]
-		public decimal fol_id
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_fol_id", DbType="Decimal(18,0)")]
+		public System.Nullable<decimal> fol_id
 		{
 			get
 			{
@@ -207,6 +211,26 @@ namespace Model
 					this._fol_id = value;
 					this.SendPropertyChanged("fol_id");
 					this.Onfol_idChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_use_id", DbType="Decimal(18,0)")]
+		public System.Nullable<decimal> use_id
+		{
+			get
+			{
+				return this._use_id;
+			}
+			set
+			{
+				if ((this._use_id != value))
+				{
+					this.Onuse_idChanging(value);
+					this.SendPropertyChanging();
+					this._use_id = value;
+					this.SendPropertyChanged("use_id");
+					this.Onuse_idChanged();
 				}
 			}
 		}
@@ -231,7 +255,7 @@ namespace Model
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_name", DbType="Char(256) NOT NULL", CanBeNull=false)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_name", DbType="VarChar(256) NOT NULL", CanBeNull=false)]
 		public string name
 		{
 			get
@@ -271,7 +295,7 @@ namespace Model
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_guid", DbType="Char(256) NOT NULL", CanBeNull=false)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_guid", DbType="VarChar(1024) NOT NULL", CanBeNull=false)]
 		public string guid
 		{
 			get
@@ -425,7 +449,7 @@ namespace Model
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_name", DbType="Char(60) NOT NULL", CanBeNull=false)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_name", DbType="VarChar(60) NOT NULL", CanBeNull=false)]
 		public string name
 		{
 			get
@@ -445,7 +469,7 @@ namespace Model
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_password", DbType="Char(100) NOT NULL", CanBeNull=false)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_password", DbType="VarChar(100) NOT NULL", CanBeNull=false)]
 		public string password
 		{
 			get
@@ -551,7 +575,7 @@ namespace Model
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_name", DbType="Char(256) NOT NULL", CanBeNull=false)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_name", DbType="VarChar(256) NOT NULL", CanBeNull=false)]
 		public string name
 		{
 			get
@@ -602,7 +626,7 @@ namespace Model
 		
 		private System.Nullable<decimal> _fol_id;
 		
-		private decimal _use_id;
+		private System.Nullable<decimal> _use_id;
 		
 		private string _name;
 		
@@ -618,7 +642,7 @@ namespace Model
     partial void OnidChanged();
     partial void Onfol_idChanging(System.Nullable<decimal> value);
     partial void Onfol_idChanged();
-    partial void Onuse_idChanging(decimal value);
+    partial void Onuse_idChanging(System.Nullable<decimal> value);
     partial void Onuse_idChanged();
     partial void OnnameChanging(string value);
     partial void OnnameChanged();
@@ -673,8 +697,8 @@ namespace Model
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_use_id", DbType="Decimal(18,0) NOT NULL")]
-		public decimal use_id
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_use_id", DbType="Decimal(18,0)")]
+		public System.Nullable<decimal> use_id
 		{
 			get
 			{
@@ -693,7 +717,7 @@ namespace Model
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_name", DbType="Char(60) NOT NULL", CanBeNull=false)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_name", DbType="VarChar(60) NOT NULL", CanBeNull=false)]
 		public string name
 		{
 			get
@@ -782,7 +806,7 @@ namespace Model
 		
 		private decimal _id;
 		
-		private decimal _fil_id;
+		private System.Nullable<decimal> _fil_id;
 		
 		private System.DateTime _time;
 		
@@ -792,7 +816,7 @@ namespace Model
     partial void OnCreated();
     partial void OnidChanging(decimal value);
     partial void OnidChanged();
-    partial void Onfil_idChanging(decimal value);
+    partial void Onfil_idChanging(System.Nullable<decimal> value);
     partial void Onfil_idChanged();
     partial void OntimeChanging(System.DateTime value);
     partial void OntimeChanged();
@@ -823,8 +847,8 @@ namespace Model
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_fil_id", DbType="Decimal(18,0) NOT NULL")]
-		public decimal fil_id
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_fil_id", DbType="Decimal(18,0)")]
+		public System.Nullable<decimal> fil_id
 		{
 			get
 			{
