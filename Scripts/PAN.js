@@ -56,6 +56,7 @@ PAN.prototype.init = function () {
 
     //加载默认根文件夹数据
     self.getIntoFolder();
+    self.updateCurrentPath();
 
     //浏览器resize事件
     $(window).resize(function () {
@@ -103,7 +104,20 @@ PAN.prototype.init = function () {
     });
     //文件双击事件
     self.dom.table_body.on('dblclick', '.fileinfo', function () {
-        console.log('double click');
+        var tr = $(this).parents('tr');
+        var type = tr.attr('data-type'),
+            id = tr.attr('data-id'),
+            name = $(this).find('.filename').html();
+        //如果是文件夹则进入子文件夹
+        if (type == 0) {
+            self.currentFolder = id;
+            self.getIntoFolder();
+            self.currentPath.push({
+                id: id,
+                name: name
+            });
+            self.updateCurrentPath();
+        }
     });
     //文件操作点击事件
     self.dom.table_body.on('click', '.operate a', function (e) {
@@ -248,6 +262,7 @@ PAN.prototype.constructFiles = function (data) {
         var node = self.constructFileNode(data[i]);
         self.dom.table_body.append(node);
     }
+    self.emptyFolderCheck();
 }
 //向文件列表中添加一个文件\文件夹(仅DOM操作)
 PAN.prototype.addNewNode = function (data) {
@@ -268,6 +283,7 @@ PAN.prototype.addNewNode = function (data) {
             pos.next(node);
         }
     }
+    self.emptyFolderCheck();
 }
 //重命名(添加)文件夹确认
 PAN.prototype.fileRename = function (data, name) {
@@ -299,4 +315,32 @@ PAN.prototype.getIntoFolder = function () {
     }, function (info) {
         self.constructFiles(info);
     });
+}
+//删除文件或文件夹
+PAN.prototype.fileDelete = function (data) {
+    var self = this;
+    self.ajax('Delete', {
+        type: data.type,
+        id: data.id
+    }, function (info) {
+        self.dom.table_body.find('tr[data-id=' + data.id + '][data-type=' + data.type + ']').fadeOut('fast', function () {
+            $(this).remove();
+            self.emptyFolderCheck();
+        });
+    });
+}
+//更新路径显示
+PAN.prototype.updateCurrentPath = function () {
+    var self = this;
+    console.log(self.currentPath);
+}
+//往table_body中添加空文件夹提示
+PAN.prototype.emptyFolderCheck = function () {
+    var self = this;
+    var tr = self.dom.table_body.find('tr');
+    if (tr.length == 0) {
+        self.dom.table_body.append('<tr><td colspan="3" class="empty"><img src="/images/empty.svg" /><p>没有文件，快上传一个吧！</p></td></tr>');
+    } else {
+        self.dom.table_body.find('tr td.empty').parents('tr').remove();
+    }
 }

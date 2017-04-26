@@ -6,6 +6,8 @@ using System.Web;
 using Model;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using PAN.Conf;
+using System.IO;
 
 
 namespace PAN.Controller
@@ -13,7 +15,7 @@ namespace PAN.Controller
     /// <summary>
     /// JSON.NET的日期格式化
     /// </summary>
-    public class DateTimeFormat: IsoDateTimeConverter
+    public class DateTimeFormat : IsoDateTimeConverter
     {
         public DateTimeFormat()
         {
@@ -95,30 +97,30 @@ namespace PAN.Controller
             decimal? currentFolder = this.requestData.currentFolder;
 
             List<NodeData> retFolder = (from c in db.folders
-                                             where Equals(c.fol_id, currentFolder)
-                                             orderby c.updated_at descending
-                                             select new NodeData
-                                             {
-                                                 id = c.id,
-                                                 type = 0,
-                                                 filename = c.name.Trim(),
-                                                 time = c.updated_at,
-                                                 del = false,
-                                                 size = "-"
-                                             }).ToList();
+                                        where Equals(c.fol_id, currentFolder)
+                                        orderby c.updated_at descending
+                                        select new NodeData
+                                        {
+                                            id = c.id,
+                                            type = 0,
+                                            filename = c.name.Trim(),
+                                            time = c.updated_at,
+                                            del = false,
+                                            size = "-"
+                                        }).ToList();
             List<NodeData> retFile = (from c in db.files
-                                           where Equals(c.softdelete, false) && c.use_id == this.uid && Equals(c.fol_id, currentFolder)
-                                           orderby c.updated_at descending
-                                           select new NodeData
-                                           {
-                                               id = c.id,
-                                               type = c.fil_id == null ? 6 : (decimal)c.fil_id,
-                                               filename = c.name.Trim(),
-                                               time = c.updated_at,
-                                               del = c.softdelete,
-                                               size = c.size.ToString()
-                                           }).ToList();
-            
+                                      where Equals(c.softdelete, false) && c.use_id == this.uid && Equals(c.fol_id, currentFolder)
+                                      orderby c.updated_at descending
+                                      select new NodeData
+                                      {
+                                          id = c.id,
+                                          type = c.fil_id == null ? 6 : (decimal)c.fil_id,
+                                          filename = c.name.Trim(),
+                                          time = c.updated_at,
+                                          del = c.softdelete,
+                                          size = c.size.ToString()
+                                      }).ToList();
+
             List<NodeData> ret = retFolder.Concat(retFile).ToList();
 
             this.resultData = ret;
@@ -136,7 +138,7 @@ namespace PAN.Controller
 
             NodeData ret = null;
 
-            if(type == 0)   //文件夹类型
+            if (type == 0)   //文件夹类型
             {
                 folders folder = (from c in db.folders
                                   where c.id == id
@@ -153,7 +155,8 @@ namespace PAN.Controller
                     del = false,
                     size = "-"
                 };
-            }else
+            }
+            else
             {
                 files file = (from c in db.files
                               where c.id == id
@@ -174,6 +177,70 @@ namespace PAN.Controller
             }
 
             this.resultData = ret;
+        }
+
+        /// <summary>
+        /// 删除文件或文件夹
+        /// </summary>
+        [Authentication]
+        public void Delete()
+        {
+            decimal id = this.requestData.id;
+            decimal type = this.requestData.type;
+            //判断是文件夹还是文件
+            if (type == 0)
+            {
+                BFSDeleteFolder(id);
+            }
+            else
+            {
+                files file = (from c in db.files
+                             where c.id == id
+                             select c).FirstOrDefault();
+                FileDelete(file);
+            }
+            this.resultData = null;
+        }
+
+        /// <summary>
+        /// BFS删除文件夹(软删除)
+        /// </summary>
+        /// <param name="fid"></param>
+        private void BFSDeleteFolder(decimal fid)
+        {
+            List<decimal> f = (from c in db.folders
+                               where c.fol_id == fid
+                               select c.id).ToList<decimal>();
+            f.ForEach((item) =>
+            {
+                BFSDeleteFolder(item);
+            });
+
+            List<files> file = (from c in db.files
+                                where c.fol_id == fid
+                                select c).ToList<files>();
+            file.ForEach((e) =>
+            {
+                FileDelete(e);
+            });
+            db.folders.DeleteOnSubmit(db.folders.Where(u => u.id == fid).FirstOrDefault());
+            db.SubmitChanges();
+        }
+
+        /// <summary>
+        /// 删除文件(软删除)
+        /// </summary>
+        /// <param name="fid">文件编号</param>
+        private void FileDelete(files file)
+        {
+            string path = App.Get("SavePath");
+            if (file != null)
+            {
+                File.Delete(path + file.guid);
+                file.fol_id = null;
+                file.softdelete = true;
+            }
+            db.SubmitChanges();
         }
     }
 }

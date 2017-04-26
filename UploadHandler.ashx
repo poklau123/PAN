@@ -91,7 +91,7 @@ public class UploadHandler : IHttpHandler, IRequiresSessionState
         //检查文件夹是否是当前用户的
         decimal currentUid = HttpContext.Current.Session[App.Get("Authentication")["Key"]];
         var checkFolder = (from c in db.folders
-                           where c.use_id == currentUid && Equals(c.fol_id, folderId)
+                           where c.use_id == currentUid && Equals(c.id, folderId)
                            select c).Count() > 0;
         if (!checkFolder)
         {
