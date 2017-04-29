@@ -36,6 +36,7 @@ namespace PAN.Conf
                 {5, new List<string> { "rar", "zip", "7z", "tar"} },  //压缩包
                 //否则为其它类型
             });
+            dict.Add("DownloadSpeed", 300 * 1024);     //下载速度(Byte)
         }
 
         public static dynamic Get(string _key)

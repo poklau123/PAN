@@ -55,6 +55,9 @@ body {
     font-size:12px;
     padding:5px 0;
 }
+.filelist_area .current .path *{
+    margin-right:5px;
+}
 .filelists{
     overflow:auto;
 }

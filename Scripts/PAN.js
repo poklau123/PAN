@@ -19,6 +19,9 @@ function PAN() {
         table_body: $('.filelists table tbody'),//文件列表区域
 
         uploadModal: $('#uploadModal'),         //文件上传模态框
+        username: $('.username'),                //用户姓名显示
+        usedsize: $('.usedsize'),               //已使用容量显示
+        checkall: $('#checkall'),               //全选框
     };
     //文件类型编号对应文件图标名称(无后缀)(构造节点用)
     this.typeIcon = {
@@ -34,6 +37,8 @@ function PAN() {
     this.currentPath = [];
     //当前文件夹编号
     this.currentFolder = null;
+    //搜索类型
+    this.searchType = null;
 
     //规定请求默认配置
     this.ajax = function(mtd, data, callback){
@@ -56,7 +61,11 @@ PAN.prototype.init = function () {
 
     //加载默认根文件夹数据
     self.getIntoFolder();
-    self.updateCurrentPath();
+    //获取当前用户信息
+    self.ajax("MyInfo", {}, function (info) {
+        self.dom.username.html(info.name);
+        self.dom.usedsize.html(self.getSizeOfByte(info.savedsize));
+    });
 
     //浏览器resize事件
     $(window).resize(function () {
@@ -95,28 +104,65 @@ PAN.prototype.init = function () {
     });
     //搜索按钮点击事件
     self.dom.btn_search.click(function () {
-
+        var word = self.dom.input_search.val().trim();
+        self.currentFolder = null;
+        self.currentPath = [];
+        self.searchType = "搜索:" + word;
+        self.ajax("Search", {
+            event: 'search',
+            word: word
+        }, function (info) {
+            self.constructFiles(info);
+        });
     });
     //类型列表点击事件
     self.dom.typelistItems.click(function () {
+        $(this).addClass('active').siblings('a').removeClass('active');
         var type = $(this).attr('data-type');
-        console.log(type);
+        var text = $(this).text();
+        self.currentFolder = null;      //重置当前文件夹
+        self.currentPath = [];          //重置当前路径
+        if (type == 0) {                //全部文件
+            self.searchType = null;
+            self.getIntoFolder();
+        } else {
+            self.searchType = text;
+            if (type > 0) {             //类型
+                self.ajax("Search", {
+                    event: 'filetype',
+                    type: type
+                }, function (info) {
+                    self.constructFiles(info);
+                });
+            } else if (type == -1) {    //回收站
+                self.ajax("Search", {
+                    event: 'recycle'
+                }, function (info) {
+                    self.constructFiles(info);
+                });
+            } else if (type == -2) {    //最近下载
+                self.ajax("Search", {
+                    event: 'recent'
+                }, function (info) {
+                    self.constructFiles(info);
+                });
+            }
+        }
     });
     //文件双击事件
-    self.dom.table_body.on('dblclick', '.fileinfo', function () {
-        var tr = $(this).parents('tr');
+    self.dom.table_body.on('dblclick', 'tr', function () {
+        var tr = $(this);
         var type = tr.attr('data-type'),
             id = tr.attr('data-id'),
             name = $(this).find('.filename').html();
         //如果是文件夹则进入子文件夹
         if (type == 0) {
             self.currentFolder = id;
-            self.getIntoFolder();
             self.currentPath.push({
                 id: id,
                 name: name
             });
-            self.updateCurrentPath();
+            self.getIntoFolder();
         }
     });
     //文件操作点击事件
@@ -126,7 +172,7 @@ PAN.prototype.init = function () {
         var tr_data = JSON.parse(tr.attr('data-info'));
         switch (type) {
             case 'download': (function (node, data) {
-                window.open('./DownloadHandle.ashx?id'+ data.id);
+                window.open('./DownloadHandler.ashx?id='+ data.id);
             })(tr, tr_data); break;
             case 'rename': (function (node, data) {
                 node.find('.filename').html('<input type="text" value="' + data.filename + '"/><img class="check" class="check" src="images/check.svg" />');
@@ -141,6 +187,9 @@ PAN.prototype.init = function () {
             })(tr, tr_data); break;
             case 'restore': (function (node, data) {
                 self.fileRestore(data);
+            })(tr, tr_data); break;
+            case 'destroy': (function (node, data) {
+                self.fileDestroy(data);
             })(tr, tr_data); break;
         }
     });
@@ -157,6 +206,57 @@ PAN.prototype.init = function () {
                 node.find('.filename').html(data.filename);
             })(tr, tr_data); break;
         }
+    });
+    //目录点击
+    self.dom.label_path.on('click', 'a', function (e) {
+        switch (e.currentTarget.className) {
+            case 'back': self.currentPath.pop(); break;
+            case 'folder':
+                var id = $(this).attr('data-id');
+                console.log(id, self.currentPath);
+                do {
+                    var pop = self.currentPath.pop();
+                } while (pop.id != id);
+                self.currentPath.push(pop);
+        }
+        if (self.currentPath.length > 0) {
+            self.currentFolder = self.currentPath[self.currentPath.length - 1].id;
+        } else {
+            self.currentFolder = null;
+        }
+        
+        self.getIntoFolder();
+    });
+    //全选框选中的时候
+    self.dom.checkall.change(function (e) {
+        var checked = e.currentTarget.checked;
+        self.dom.table_body.find('tr input[type=checkbox]').prop('checked', checked).first().change();
+    });
+    //监听文件列表的checkbox改动
+    self.dom.table_body.on('change', 'input[type=checkbox]', function () {
+        var len = self.dom.table_body.find('tr input[type=checkbox]:checked').length;
+        if (len > 0 && self.searchType == null) {
+            self.dom.btn_multiDel.show()
+        } else {
+            self.dom.btn_multiDel.hide();
+        }
+    });
+    //多选删除按钮点击的时候
+    self.dom.btn_multiDel.click(function () {
+        var checkedlist = self.dom.table_body.find('tr input[type=checkbox]:checked').parents('tr');
+        var datalist = [];
+        checkedlist.each(function (i, e) {
+            var data = JSON.parse($(e).attr('data-info'));
+            datalist.push({
+                id: data.id,
+                type: data.type
+            });
+        });
+        self.ajax("MultiDelete", datalist, function (info) {
+            checkedlist.fadeOut('fast', function () {
+                $(this).remove();
+            });
+        });
     });
     //初始化plupload
     $("#uploader").plupload({
@@ -227,12 +327,12 @@ PAN.prototype.constructFileNode = function (opts) {
         if (opts.del == false) {
             //如果是文件类型
             if(opts.type > 0){
-                return '<a href="javascript:;" class="download"><img src="images/download.svg" /></a><a href="javascript:;" class="rename"><img src="images/rename.svg" /></a><a href="javascript:;" class="delete"><img src="images/delete.svg" /></a>';
+                return '<a title="下载" href="javascript:;" class="download"><img src="images/download.svg" /></a><a title="重命名" href="javascript:;" class="rename"><img src="images/rename.svg" /></a><a title="删除" href="javascript:;" class="delete"><img src="images/delete.svg" /></a>';
             }else{
-                return '<a href="javascript:;" class="rename"><img src="images/rename.svg" /></a><a href="javascript:;" class="delete"><img src="images/delete.svg" /></a>';
+                return '<a title="重命名" href="javascript:;" class="rename"><img src="images/rename.svg" /></a><a title="删除" href="javascript:;" class="delete"><img src="images/delete.svg" /></a>';
             }
         } else {
-            return '<a href="javascript:;" class="restore"><img src="images/restore.svg" /></a>';
+            return '<a title="还原" href="javascript:;" class="restore"><img src="images/restore.svg" /></a><a title="彻底删除" href="javascript:;" class="destroy"><img src="images/destroy.svg" /></a>';
         }
     }(opts));
     
@@ -241,18 +341,22 @@ PAN.prototype.constructFileNode = function (opts) {
             return '-';
         }
         var size = opts.size;
-        var tag = ['KB', 'MB', 'GB', 'TB'];
-        for (var i = 0; i < tag.length; i++) {
-            size /= 1024;
-            if (size < 1024) {
-                return size.toFixed(2) + tag[i];
-            }
-        }
+        return self.getSizeOfByte(size);
     }(opts));
 
     td_time.html(opts.time);
 
     return tr;
+}
+//根据Byte获取可读大小
+PAN.prototype.getSizeOfByte = function (size) {
+    var tag = ['B', 'KB', 'MB', 'GB', 'TB'];
+    for (var i = 0; i < tag.length; i++) {
+        var _size = size / Math.pow(1024, i);
+        if (_size < 1024) {
+            return _size.toFixed(2) + tag[i];
+        }
+    }
 }
 //渲染文件列表
 PAN.prototype.constructFiles = function (data) {
@@ -263,6 +367,7 @@ PAN.prototype.constructFiles = function (data) {
         self.dom.table_body.append(node);
     }
     self.emptyFolderCheck();
+    self.updateCurrentPath();
 }
 //向文件列表中添加一个文件\文件夹(仅DOM操作)
 PAN.prototype.addNewNode = function (data) {
@@ -319,27 +424,88 @@ PAN.prototype.getIntoFolder = function () {
 //删除文件或文件夹
 PAN.prototype.fileDelete = function (data) {
     var self = this;
-    self.ajax('Delete', {
-        type: data.type,
-        id: data.id
-    }, function (info) {
-        self.dom.table_body.find('tr[data-id=' + data.id + '][data-type=' + data.type + ']').fadeOut('fast', function () {
+    //如果是新建文件夹则只删除不往后台发数据
+    if(data.id == -1){
+        self.dom.table_body.find('tr[data-id=-1][data-type=0]').fadeOut('fast', function () {
             $(this).remove();
             self.emptyFolderCheck();
+        });
+    } else {
+        self.ajax('Delete', {
+            type: data.type,
+            id: data.id
+        }, function (info) {
+            self.dom.table_body.find('tr[data-id=' + data.id + '][data-type=' + data.type + ']').fadeOut('fast', function () {
+                $(this).remove();
+                self.emptyFolderCheck();
+            });
+        });
+    }    
+}
+//回收站文件还原
+PAN.prototype.fileRestore = function (data) {
+    var self = this;
+    self.ajax("Restore", {
+        fid: data.id
+    }, function (info) {
+        self.dom.table_body.find('tr[data-id=' + data.id + ']').fadeOut('fast', function () {
+            $(this).remove();
+        });
+    });
+}
+//回收站文件彻底删除
+PAN.prototype.fileDestroy = function (data) {
+    var self = this;
+    self.ajax("Destroy", {
+        fid: data.id
+    }, function (info) {
+        self.dom.table_body.find('tr[data-id=' + data.id + ']').fadeOut('fast', function () {
+            $(this).remove();
         });
     });
 }
 //更新路径显示
 PAN.prototype.updateCurrentPath = function () {
     var self = this;
-    console.log(self.currentPath);
+    var pathNodeArr = [];               //左侧要显示的DOM节点数组
+    //如果不是在搜索的话，只显示搜索类型，否则显示搜索路径
+    if (self.searchType == null) {
+        if (self.currentPath.length == 0) {
+            pathNodeArr.push('<span>全部文件</span>');
+        } else {
+            pathNodeArr.push('<a class="back" href="javascript:;">返回上一级</a>');
+            pathNodeArr.push('<span class="|">|</span>');
+            self.currentPath.forEach(function (elem, i) {
+                //如果是最后一个则不显示为链接，否则显示为链接
+                if (i == self.currentPath.length - 1) {
+                    pathNodeArr.push('<span class="current">' + elem.name + '</span>');
+                } else {
+                    pathNodeArr.push('<a class="folder" href="javascript:;" data-id="' + elem.id + '">' + elem.name + '</a>');
+                    pathNodeArr.push('<span class="sub">></span>');
+                }
+            });
+        }
+    } else {
+        pathNodeArr.push('<span>'+self.searchType+'</span>');
+    }
+    
+    self.dom.label_path.html(pathNodeArr);
+    //更新右侧文件夹信息节点
+    var tr_num = self.dom.table_body.find('tr[data-type]').length;
+    var tr_folder_num = self.dom.table_body.find('tr[data-type=0]').length;
+    var tr_file_num = tr_num - tr_folder_num;
+    if (tr_num == 0) {
+        self.dom.label_dirInfo.html('<span>已全部加载,共0个</span>');
+    } else {
+        self.dom.label_dirInfo.html('<span>共' + tr_folder_num + '个文件夹，' + tr_file_num + '个文件</span>');
+    }
 }
 //往table_body中添加空文件夹提示
 PAN.prototype.emptyFolderCheck = function () {
     var self = this;
     var tr = self.dom.table_body.find('tr');
     if (tr.length == 0) {
-        self.dom.table_body.append('<tr><td colspan="3" class="empty"><img src="/images/empty.svg" /><p>没有文件，快上传一个吧！</p></td></tr>');
+        self.dom.table_body.append('<tr><td colspan="3" class="empty"><img src="/images/empty.svg" /><p>此处空空如也！</p></td></tr>');
     } else {
         self.dom.table_body.find('tr td.empty').parents('tr').remove();
     }

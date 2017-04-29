@@ -759,3 +759,13 @@ error:
 end
 go
 
+truncate table filetypes
+go
+insert into filetypes(name) values('图片');
+insert into filetypes(name) values('文档');
+insert into filetypes(name) values('视频');
+insert into filetypes(name) values('音乐');
+insert into filetypes(name) values('压缩包');
+insert into filetypes(name) values('其它');
+go
+

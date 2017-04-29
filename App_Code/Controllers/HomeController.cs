@@ -2,9 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using Model;
 using Newtonsoft.Json;
+using JLinq = Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Converters;
 using PAN.Conf;
 using System.IO;
@@ -97,7 +97,7 @@ namespace PAN.Controller
             decimal? currentFolder = this.requestData.currentFolder;
 
             List<NodeData> retFolder = (from c in db.folders
-                                        where Equals(c.fol_id, currentFolder)
+                                        where Equals(c.fol_id, currentFolder) && c.use_id == this.uid
                                         orderby c.updated_at descending
                                         select new NodeData
                                         {
@@ -195,8 +195,8 @@ namespace PAN.Controller
             else
             {
                 files file = (from c in db.files
-                             where c.id == id
-                             select c).FirstOrDefault();
+                              where c.id == id
+                              select c).FirstOrDefault();
                 FileDelete(file);
             }
             this.resultData = null;
@@ -209,7 +209,7 @@ namespace PAN.Controller
         private void BFSDeleteFolder(decimal fid)
         {
             List<decimal> f = (from c in db.folders
-                               where c.fol_id == fid
+                               where c.fol_id == fid && c.use_id == this.uid
                                select c.id).ToList<decimal>();
             f.ForEach((item) =>
             {
@@ -217,7 +217,7 @@ namespace PAN.Controller
             });
 
             List<files> file = (from c in db.files
-                                where c.fol_id == fid
+                                where c.fol_id == fid && c.use_id == this.uid
                                 select c).ToList<files>();
             file.ForEach((e) =>
             {
@@ -236,11 +236,148 @@ namespace PAN.Controller
             string path = App.Get("SavePath");
             if (file != null)
             {
-                File.Delete(path + file.guid);
+                //File.Delete(path + file.guid);
                 file.fol_id = null;
                 file.softdelete = true;
+                file.updated_at = DateTime.Now;
             }
             db.SubmitChanges();
+        }
+
+        /// <summary>
+        /// 彻底删除文件
+        /// </summary>
+        public void Destroy()
+        {
+            string path = App.Get("SavePath");
+            decimal fid = this.requestData.fid;
+            files file = (from c in db.files
+                          where c.use_id == this.uid && c.softdelete == true && c.id == fid
+                          select c).FirstOrDefault();
+            File.Delete(path + file.guid);
+            db.record.DeleteAllOnSubmit(db.record.Where(u => u.fil_id == fid)); //删除记录
+            db.files.DeleteOnSubmit(file);
+            db.users.Where(u => u.id == this.uid).FirstOrDefault().savedsize -= file.size;
+            db.SubmitChanges();
+        }
+
+        /// <summary>
+        /// 还原文件
+        /// </summary>
+        public void Restore()
+        {
+            decimal fid = this.requestData.fid;
+            files file = (from c in db.files
+                          where c.use_id == this.uid && c.softdelete == true && c.id == fid
+                          select c).FirstOrDefault();
+            file.softdelete = false;
+            file.updated_at = DateTime.Now;
+            db.SubmitChanges();
+        }
+
+        /// <summary>
+        /// 搜索
+        /// </summary>
+        public void Search()
+        {
+            //根据文件类型获取文件列表
+            Func<decimal, IQueryable<NodeData>> SelectByFileType = (t) =>
+            {
+                return from c in db.files
+                       orderby c.updated_at descending
+                       where c.fil_id == t && c.use_id == this.uid && c.softdelete == false
+                       select new NodeData
+                       {
+                           id = c.id,
+                           type = t,
+                           filename = c.name,
+                           del = c.softdelete,
+                           size = c.size.ToString(),
+                           time = c.updated_at
+                       };
+            };
+            //回收站
+            Func<IQueryable<NodeData>> SelectFromRecycle = () =>
+            {
+                return from c in db.files
+                       orderby c.updated_at descending
+                       where c.use_id == this.uid && c.softdelete == true
+                       select new NodeData
+                       {
+                           id = c.id,
+                           type = c.fil_id == null ? 6 : Convert.ToDecimal(c.fil_id),
+                           filename = c.name,
+                           del = c.softdelete,
+                           size = c.size.ToString(),
+                           time = c.updated_at
+                       };
+            };
+            //最近下载
+            Func<IQueryable<NodeData>> SelectFromRecent = () =>
+            {
+                return from c in db.record
+                       join d in db.files on c.fil_id equals d.id
+                       orderby c.time descending
+                       where d.use_id == this.uid
+                       select new NodeData
+                       {
+                           id = d.id,
+                           type = d.fil_id == null ? 6 : Convert.ToDecimal(d.fil_id),
+                           filename = d.name,
+                           del = d.softdelete,
+                           size = d.size.ToString(),
+                           time = c.time
+                       };
+
+            };
+            //搜索
+            Func<string, IQueryable<NodeData>> SelectFromSearch = (w) =>
+            {
+                return from c in db.files
+                       where c.use_id == this.uid && c.softdelete == false && c.name.Contains(w)
+                       orderby c.updated_at descending
+                       select new NodeData
+                       {
+                           id = c.id,
+                           type = c.fil_id == null ? 6 : Convert.ToDecimal(c.fil_id),
+                           filename = c.name,
+                           del = c.softdelete,
+                           size = c.size.ToString(),
+                           time = c.updated_at
+                       };
+            };
+            string @event = this.requestData.@event;
+            switch (@event)
+            {
+                case "filetype": this.resultData = SelectByFileType((decimal)this.requestData.type); break;
+                case "recycle": this.resultData = SelectFromRecycle(); break;
+                case "recent": this.resultData = SelectFromRecent(); break;
+                case "search": this.resultData = SelectFromSearch((string)this.requestData.word); break;
+            }
+        }
+
+        /// <summary>
+        /// 多删除
+        /// </summary>
+        public void MultiDelete()
+        {
+            List<dynamic> datalist = ((JLinq.JArray)this.requestData).ToList<dynamic>();
+            List<decimal> folderlist = datalist.Where(u => u.type == 0).Select(u => (decimal)u.id).ToList<decimal>();   //文件夹列表
+            List<decimal> filelist = datalist.Where(u => u.type > 0).Select(u => (decimal)u.id).ToList<decimal>();      //文件列表
+
+            folderlist.ForEach((item) =>
+            {
+                BFSDeleteFolder(item);
+            });
+            List<files> file = (from c in db.files
+                               where c.use_id == this.uid && filelist.Contains(c.id)
+                               select c).ToList();
+            file.ForEach((f) =>
+            {
+                FileDelete(f);
+            });
+
+            this.resultData = null;
         }
     }
 }

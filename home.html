@@ -22,7 +22,7 @@
                     <li class="dropdown">
                         <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="true">
                             <img src="images/user.svg"/>
-                            <span class="name">刘博</span>
+                            <span class="username"></span>
                             <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu" role="menu">
@@ -35,7 +35,7 @@
     </nav>
     <div class="container">
         <div class="row">
-            <div class="col-lg-2 col-md-2 filetype_area">
+            <div class="col-lg-2 col-md-2 col-sm-2 filetype_area">
                 <a href="javascript:;" class="list-group-item active" data-type="0">
                     <img src="images/list.svg" />全部文件
                 </a>
@@ -63,8 +63,12 @@
                 <a href="javascript:;" class="list-group-item" data-type="-2">
                     <img src="images/recent.svg" />最近下载
                 </a>
+                <div class="well-sm small">
+                    <label class="label label-info">当前已使用:</label>
+                    <span class="usedsize"></span>
+                </div>
             </div>
-            <div class="col-lg-10 col-md 10">
+            <div class="col-lg-10 col-md-10 col-sm-10">
                 <div class="filelist_area">
                     <div class="menus">
                         <div class="col-md-8 col-lg-8 col-sm-8">
@@ -88,15 +92,15 @@
                         </div>
                     </div>
                     <div class="current">
-                        <span class="pull-left path">全部文件</span>
-                        <span class="pull-right dirinfo">当前目录共个文件</span>
+                        <span class="pull-left path"></span>
+                        <span class="pull-right dirinfo"></span>
                     </div>
                     <div class="filelists">
                         <table class="table">
                             <thead>
                                 <tr>
                                     <th width="80">
-                                        <input type="checkbox" />
+                                        <input id="checkall" type="checkbox" />
                                         <span>文件名</span>
                                     </th>
                                     <th width="20">
