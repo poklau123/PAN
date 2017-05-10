@@ -1,4 +1,5 @@
 ﻿/// <reference path="jquery-1.12.4.js" />
+/// <reference path="Common.js" />
 
 //云盘类
 function PAN() {
@@ -9,6 +10,7 @@ function PAN() {
         btn_multiDel: $('#multiDelBtn'),    //批量删除按钮
         input_search: $('#searchContent'),  //搜索输入框
         btn_search: $('#searchBtn'),        //搜索按钮
+        btn_logout: $('#logoutBtn'),        //退出登录按钮
         
         label_path: $('.current .path'),        //当前路径显示标签
         label_dirInfo: $('.current .dirinfo'),  //当前目录信息标签
@@ -255,6 +257,18 @@ PAN.prototype.init = function () {
         self.ajax("MultiDelete", datalist, function (info) {
             checkedlist.fadeOut('fast', function () {
                 $(this).remove();
+            });
+        });
+    });
+    //退出登录按钮点击的时候
+    self.dom.btn_logout.click(function () {
+        $.sendData({
+            ctl: 'AuthController',
+            mtd: 'Logout',
+            data: null
+        }).done(function (data) {
+            checkRetCode(data, function (info) {
+                location.href = 'index.html';
             });
         });
     });
